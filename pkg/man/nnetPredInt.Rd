@@ -1,0 +1,144 @@
+\name{nnetPredInt}
+\alias{nnetPredInt}
+%- Also NEED an '\alias' for EACH other topic documented here.
+\title{
+%%  ~~function to do ... ~~
+Prediction intervals of neural networks
+}
+\description{
+%%  ~~ A concise (1-5 lines) description of what the function does. ~~
+Get the prediction intervals of new dataset at certain confidence level based on the training datasets and the gradient at weight parameters of the neural network model.
+}
+\usage{
+nnetPredInt(xTrain, yTrain, yFit, node, wts, newData, alpha=0.05 ,lambda=0.5, funName='sigmoid')
+}
+%- maybe also 'usage' for other objects documented here.
+\arguments{
+  \item{xTrain}{
+  matrix or data frame of input values for the training dataset.
+  }
+  \item{yTrain}{
+  vector of target values for the training dataset.
+  }
+  \item{yFit}{
+  vector of the fitted values, as the output produced by the training model, e.g. nnet$fitted.values (nnet) and nn$net.result[[1]] (neuralnet)
+}
+  \item{node}{
+a vector of integers specifying the number of hidden nodes in each layer. Multi-layer network has the structure (s0, s1, ..., sm), in which s0 denotes the dimension for input layer and sm denotes the dimension of the output layer. sm is usually set as 1.
+  }
+   \item{wts}{
+  a numeric vector of optimal weight parameters as the output of the neural network training model. For example:
+  }
+  \item{}{
+  nnet object, produced by nnet package. We can directly set the wts as: wts = nnet$wts
+  }
+  \item{}{
+  nn object, produced by neuralnet package. We need to use \link{transWeightListToVect} function to transform the list of weights to a single vector first: wts = transWeightListToVect(wtsList, m).
+  }
+   \item{newData}{
+  matrix or data frame of the prediction dataset.
+  }
+  \item{alpha}{
+  confidence level. The confidence level is set to (1-alpha). In default, alpha = 0.05.
+  }
+  \item{lambda}{
+  decay parameter of weights when the Jacobian matrix of training dataset is singular. In default, lamda is set to 0.5 .
+  }
+  \item{funName}{
+  activation function name of neuron, e.g. 'sigmoid', 'tanh', etc. In default, it is set to 'sigmoid'.
+  }
+}
+\details{
+%%  ~~ If necessary, more details than the description above ~~
+}
+\value{
+%%  ~Describe the value returned
+%%  If it is a LIST, use
+%%  \item{comp1 }{Description of 'comp1'}
+%%  \item{comp2 }{Description of 'comp2'}
+%% ...
+}
+\references{
+%% ~put references to the literature/web site here ~
+De Veaux R. D., Schumi J., Schweinsberg J., Ungar L. H., 1998, "Prediction intervals for neural networks via nonlinear regression", Technometrics 40(4): 273-282.
+
+Chryssolouris G., Lee M., Ramsey A., "Confidence interval prediction for neural networks models", IEEE Trans. Neural Networks, 7 (1), 1996, pp. 229-232.
+}
+\author{
+%%  ~~who you are~~
+Xichen Ding <rockingdingo@gmail.com>
+}
+\note{
+%%  ~~further notes~~
+}
+
+%% ~Make other sections like Warning with \section{Warning }{....} ~
+
+\seealso{
+%% ~~objects to See Also as \code{\link{help}}, ~~~
+\code{\link{transWeightListToVect}}
+}
+\examples{
+# Example 1: using the weights found by neuralnet package
+set.seed(500)
+library(MASS)
+data <- Boston
+maxs <- apply(data, 2, max)
+mins <- apply(data, 2, min)
+scaled <- as.data.frame(scale(data, center = mins, scale = maxs - mins)) # normalization
+index <- sample(1:nrow(data),round(0.75*nrow(data)))
+train_ <- scaled[index,]
+test_ <- scaled[-index,]
+
+library(neuralnet) # Training
+n <- names(train_)
+f <- as.formula(paste("medv ~", paste(n[!n \%in\% "medv"], collapse = " + ")))
+nn <- neuralnet(f,data = train_,hidden = c(5,3),linear.output = FALSE)
+plot(nn)
+
+library(nnetpredint) # Getting Confidence Interval
+x <- train_[,-14]
+y <- train_[,14]
+yFit <- c(nn$net.result[[1]])
+nodeNum <- c(13,5,3,1)
+m <- 3
+wtsList <- nn$weights[[1]]
+Wts <- transWeightListToVect(wtsList,m)
+newData <- test_[,-14]
+yPredInt <- nnetPredInt(x, y, yFit, nodeNum, Wts, newData)
+print(yPredInt[1:20,])
+
+# Compare to the predict values from the neuralnet Compute method
+predValue <- compute(nn,newData)
+print(matrix(predValue$net.result[1:20]))
+
+
+# Example 2: Using the weights found by nnet
+library(nnet)
+xTrain <- rbind(cbind(runif(150,min = 0, max = 0.5),runif(150,min = 0, max = 0.5)) ,
+		cbind(runif(150,min = 0.5, max = 1),runif(150,min = 0.5, max = 1))
+		)
+nObs <- dim(xTrain)[1]
+yTrain <- 0.5 + 0.4 * sin(2* pi * xTrain \%*\% c(0.4,0.6)) +rnorm(nObs,mean = 0, sd = 0.05)
+plot(xTrain \%*\% c(0.4,0.6),yTrain)
+
+# Training nnet models
+net <- nnet(yTrain ~ xTrain,size = 3, rang = 0.1,decay = 5e-4, maxit = 500)
+yFit <- c(net$fitted.values)
+nodeNum <- c(2,3,1)
+wts <- net$wts
+
+# New data for prediction intervals
+newData <- cbind(seq(0,1,0.05),seq(0,1,0.05))
+yTest <- 0.5 + 0.4 * sin(2* pi * newData \%*\% c(0.4,0.6))+rnorm(dim(newData)[1],mean = 0, sd = 0.05)
+yPredInt <- nnetPredInt(xTrain, yTrain, yFit, node = nodeNum, wts = wts,
+    newData, alpha = 0.05, funName = 'sigmoid')
+
+plot(newData \%*\% c(0.4,0.6),yTest,type = 'b')
+lines(newData \%*\% c(0.4,0.6),yPredInt$yPredValue,type = 'b',col='blue')
+lines(newData \%*\% c(0.4,0.6),yPredInt$lowerBound,type = 'b',col='red')   # lower bound
+lines(newData \%*\% c(0.4,0.6),yPredInt$upperBound,type = 'b',col='red')   # upper bound
+}
+
+% Add one or more standard keywords, see file 'KEYWORDS' in the
+% R documentation directory.
