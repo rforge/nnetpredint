@@ -13,6 +13,8 @@ yFit <- c(net$fitted.values)
 nodeNum <- c(2,3,1)
 wts <- net$wts
 
+
+library(nnetpredint)
 # New data for prediction intervals
 newData <- cbind(seq(0,1,0.05),seq(0,1,0.05))
 yTest <- 0.5 + 0.4 * sin(2* pi * newData %*% c(0.4,0.6))+rnorm(dim(newData)[1],mean = 0, sd = 0.05)
