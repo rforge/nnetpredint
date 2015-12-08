@@ -1,4 +1,4 @@
-# Test Case 2: Using the weights found by {nnet} package
+# Example 2: Using the nnet object trained by nnet package
 library(nnet)
 xTrain <- rbind(cbind(runif(150,min = 0, max = 0.5),runif(150,min = 0, max = 0.5)) ,
 		cbind(runif(150,min = 0.5, max = 1),runif(150,min = 0.5, max = 1))
@@ -13,13 +13,18 @@ yFit <- c(net$fitted.values)
 nodeNum <- c(2,3,1)
 wts <- net$wts
 
-
-library(nnetpredint)
 # New data for prediction intervals
+library(nnetpredint)
 newData <- cbind(seq(0,1,0.05),seq(0,1,0.05))
 yTest <- 0.5 + 0.4 * sin(2* pi * newData %*% c(0.4,0.6))+rnorm(dim(newData)[1],mean = 0, sd = 0.05)
-yPredInt <- nnetPredInt(xTrain, yTrain, yFit, node = nodeNum, wts = wts,
-    newData, alpha = 0.05, funName = 'sigmoid')
+
+# S3 generic method: Object of nnet
+yPredInt <- nnetPredInt(net, xTrain, yTrain, newData)
+print(yPredInt[1:20,])
+
+# S3 default method: xTrain,yTrain,yFit,...
+yPredInt2 <- nnetPredInt(xTrain, yTrain, yFit, node = nodeNum, wts = wts, newData, 
+	alpha = 0.05, funName = 'sigmoid')
 
 plot(newData %*% c(0.4,0.6),yTest,type = 'b')
 lines(newData %*% c(0.4,0.6),yPredInt$yPredValue,type = 'b',col='blue')

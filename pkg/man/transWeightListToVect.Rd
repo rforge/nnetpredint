@@ -27,10 +27,8 @@ the number of layers of the neural networks, which is the number of hidden layer
 %%  ~~ If necessary, more details than the description above ~~
 }
 \value{
-  \item{wtsVect}{
 %%     ~~Describe \code{x} here~~
-the numeric vector of optimal weights found by neural networks.
-}
+the numeric vector of optimal weights found by neural networks, dimension 1 * nPara.
 }
 \references{
 %% ~put references to the literature/web site here ~
