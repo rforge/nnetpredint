@@ -219,8 +219,7 @@ getJacobianMatrix<-function(xTrain,W,B,m,nPara,funName) {
 checkInput<-function(xTrain, yTrain, yFit, node, wts, newData) {
 	# check if any args is missing
 	checkResult = 1
-	argsCheck = (hasArg(xTrain) && hasArg(yTrain) && hasArg(yFit) && hasArg(node) && hasArg(wts) && hasArg(newData)) &&
-		((is.null(xTrain) == FALSE)) && ((is.null(yTrain) == FALSE)) && ((is.null(yFit) == FALSE)) && ((is.null(node) == FALSE)) &&
+	argsCheck = ((is.null(xTrain) == FALSE)) && ((is.null(yTrain) == FALSE)) && ((is.null(yFit) == FALSE)) && ((is.null(node) == FALSE)) &&
 		((is.null(wts) == FALSE)) && ((is.null(newData) == FALSE))
 
 	if (argsCheck == FALSE) {
@@ -287,7 +286,7 @@ checkInput<-function(xTrain, yTrain, yFit, node, wts, newData) {
 	return (checkResult)
 }
 
-nnetPredInt.default<-function(xTrain, yTrain, yFit, node, wts, newData, alpha = 0.05 ,lambda = 0.5, funName = 'sigmoid') {
+getPredInt<-function(xTrain, yTrain, yFit, node, wts, newData, alpha = 0.05 ,lambda = 0.5, funName = 'sigmoid') {
 	checkInput = checkInput(xTrain, yTrain, yFit, node, wts, newData)
 	if (checkInput == 0) {
 		return (0)

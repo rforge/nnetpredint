@@ -3,7 +3,7 @@
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 %%  ~~function to do ... ~~
-Transform the list of optimal weights to a numeric vector
+Transform the List of Optimal Weights to a Numeric Vector
 }
 \description{
 %%  ~~ A concise (1-5 lines) description of what the function does. ~~
@@ -23,9 +23,6 @@ the list of weights found by neuralnet package (nn$weights). For nnet weights ou
 the number of layers of the neural networks, which is the number of hidden layer plus + 1. m is default to 2 for single hidden layer networks.
 }
 }
-\details{
-%%  ~~ If necessary, more details than the description above ~~
-}
 \value{
 %%     ~~Describe \code{x} here~~
 the numeric vector of optimal weights found by neural networks, dimension 1 * nPara.
@@ -37,18 +34,7 @@ the numeric vector of optimal weights found by neural networks, dimension 1 * nP
 \author{
 Xichen Ding <rockingdingo@gmail.com>
 }
-\note{
-%%  ~~further notes~~
-}
-
-%% ~Make other sections like Warning with \section{Warning }{....} ~
-
 \seealso{
 %% ~~objects to See Also as \code{\link{help}}, ~~~
-}
-\examples{
-
-
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory.
+\code{\link{nnetPredInt}}
 }

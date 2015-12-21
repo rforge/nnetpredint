@@ -1,17 +1,24 @@
 \name{jacobian}
 \alias{jacobian}
+\alias{jacobian.default}
+\alias{jacobian.nnet}
+\alias{jacobian.nn}
+\alias{jacobian.rsnns}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 %%  ~~function to do ... ~~
-Jacobian Matrix of gradient function for training datasets
+Jacobian Matrix of Gradient Function for Training Datasets
 }
 \description{
 %%  ~~ A concise (1-5 lines) description of what the function does. ~~
 Calculate the Jacobian matrix of gradient function for the training dataset. It takes input from neural network models and the gradient at each weight parameters. The matrix has dimension of R [nObs * nPara], nObs denotes the number of training observations and nPara denotes the number of weights parameters.
 }
 \usage{
-## S3 method for object of class 'nnet', 'nn', 'rsnns', etc:
-jacobian(object, xTrain, funName = 'sigmoid')
+jacobian(object, ...)
+
+\method{jacobian}{nnet}(object, xTrain, funName = 'sigmoid',\dots)
+\method{jacobian}{nn}(object, xTrain, funName = 'sigmoid',\dots)
+\method{jacobian}{rsnns}(object, xTrain, funName = 'sigmoid',\dots)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -24,32 +31,24 @@ jacobian(object, xTrain, funName = 'sigmoid')
   \item{funName}{
   activation function name of neuron, e.g. 'sigmoid', 'tanh', etc. In default, it is set to 'sigmoid'.
   }
+  \item{...}{
+  additional arguments passed to the method.
+  }
 }
 \details{
 %%  ~~ If necessary, more details than the description above ~~
   Jacobian matrix with gradient function, in which J[ij] element denotes the gradient function at the jth weight parameters for the ith training observation. The dimension is equal to nObs * nPara.
 }
 \value{
-%%  ~Describe the value returned
-%%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
-}
-\references{
-%% ~put references to the literature/web site here ~
+matrix which denotes the Jacobian matrix for training datasets.
 }
 \author{
 %%  ~~who you are~~
+Xichen Ding <rockingdingo@gmail.com>
 }
-\note{
-%%  ~~further notes~~
-}
-
-%% ~Make other sections like Warning with \section{Warning }{....} ~
-
 \seealso{
 %% ~~objects to See Also as \code{\link{help}}, ~~~
+\code{\link{nnetPredInt}}
 }
 \examples{
 library(nnet)
@@ -68,5 +67,3 @@ dim(jacobMat)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{ ~kwd1 }
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line

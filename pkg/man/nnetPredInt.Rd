@@ -1,26 +1,34 @@
 \name{nnetPredInt}
 \alias{nnetPredInt}
+\alias{nnetPredInt.default}
+\alias{nnetPredInt.nnet}
+\alias{nnetPredInt.nn}
+\alias{nnetPredInt.rsnns}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 %%  ~~function to do ... ~~
-Prediction intervals of neural networks
+Prediction Intervals of Neural Networks
 }
 \description{
 %%  ~~ A concise (1-5 lines) description of what the function does. ~~
 Get the prediction intervals of new dataset at certain confidence level based on the training datasets and the gradient at weight parameters of the neural network model.
 }
 \usage{
-## S3 method for object of class 'nnet', 'nn', 'rsnns', etc:
-nnetPredInt(object, xTrain, yTrain, newData, ...)
+nnetPredInt(object, ...)
 
-## Default S3 method:
-nnetPredInt(xTrain, yTrain, yFit, node, wts, newData,
-    alpha = 0.05 , lambda = 0.5, funName = 'sigmoid')
+\method{nnetPredInt}{default}(object = NULL, xTrain, yTrain, yFit, node, wts, newData,
+    alpha = 0.05 , lambda = 0.5, funName = 'sigmoid', \dots)
+\method{nnetPredInt}{nnet}(object, xTrain, yTrain, newData, alpha = 0.05, lambda = 0.5,
+    funName = 'sigmoid', \dots)
+\method{nnetPredInt}{nn}(object, xTrain, yTrain, newData, alpha = 0.05, lambda = 0.5,
+    funName = 'sigmoid', \dots)
+\method{nnetPredInt}{rsnns}(object, xTrain, yTrain, newData, alpha = 0.05, lambda = 0.5,
+    funName = 'sigmoid', \dots)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{object}{
-  object of class: nnet as returned by nnet package, nn as returned by neuralnet package, rsnns as returned by RSNNS package.
+  object of class: nnet as returned by nnet package, nn as returned by neuralnet package, rsnns as returned by RSNNS package. Object set as NULL will use the default method which takes the weight parameters as the input from user.
   }
   \item{xTrain}{
   matrix or data frame of input values for the training dataset.
@@ -58,9 +66,9 @@ a vector of integers specifying the number of hidden nodes in each layer. Multi-
   \item{funName}{
   activation function name of neuron, e.g. 'sigmoid', 'tanh', etc. In default, it is set to 'sigmoid'.
   }
-}
-\details{
-%%  ~~ If necessary, more details than the description above ~~
+  \item{...}{
+  additional arguments passed to the method.
+  }
 }
 \value{
   data frame of the prediction intervals, including prediction value, lower and upper bounds of the interval.
@@ -93,15 +101,10 @@ RSNNS package by Christoph Bergmeir, Jose M. Benitez.
 %%  ~~who you are~~
 Xichen Ding <rockingdingo@gmail.com>
 }
-\note{
-%%  ~~further notes~~
-}
-
-%% ~Make other sections like Warning with \section{Warning }{....} ~
-
 \seealso{
 %% ~~objects to See Also as \code{\link{help}}, ~~~
 \code{\link{transWeightListToVect}}
+\code{\link{jacobian}}
 }
 \examples{
 # Example 1: Using the nn object trained by neuralnet package
@@ -130,13 +133,13 @@ newData <- test_[,-14]
 yPredInt <- nnetPredInt(nn, x, y, newData)
 print(yPredInt[1:20,])
 
-# S3 default method: xTrain,yTrain,yFit,...
+# S3 default method for user defined weights input, without model object trained:
 yFit <- c(nn$net.result[[1]])
 nodeNum <- c(13,5,3,1)
 m <- 3
 wtsList <- nn$weights[[1]]
 wts <- transWeightListToVect(wtsList,m)
-yPredInt2 <- nnetPredInt(x, y, yFit, nodeNum, wts, newData, alpha = 0.05)
+yPredInt2 <- nnetPredInt(object = NULL, x, y, yFit, nodeNum, wts, newData, alpha = 0.05)
 print(yPredInt2[1:20,])
 
 # Compare to the predict values from the neuralnet Compute method
@@ -163,15 +166,16 @@ wts <- net$wts
 # New data for prediction intervals
 library(nnetpredint)
 newData <- cbind(seq(0,1,0.05),seq(0,1,0.05))
-yTest <- 0.5 + 0.4 * sin(2* pi * newData \%*\% c(0.4,0.6))+rnorm(dim(newData)[1],mean = 0, sd = 0.05)
+yTest <- 0.5 + 0.4 * sin(2* pi * newData \%*\% c(0.4,0.6))+rnorm(dim(newData)[1],
+    mean = 0, sd = 0.05)
 
 # S3 generic method: Object of nnet
 yPredInt <- nnetPredInt(net, xTrain, yTrain, newData)
 print(yPredInt[1:20,])
 
 # S3 default method: xTrain,yTrain,yFit,...
-yPredInt2 <- nnetPredInt(xTrain, yTrain, yFit, node = nodeNum, wts = wts, newData,
-	alpha = 0.05, funName = 'sigmoid')
+yPredInt2 <- nnetPredInt(object = NULL, xTrain, yTrain, yFit, node = nodeNum, wts = wts,
+    newData, alpha = 0.05, funName = 'sigmoid')
 
 plot(newData \%*\% c(0.4,0.6),yTest,type = 'b')
 lines(newData \%*\% c(0.4,0.6),yPredInt$yPredValue,type = 'b',col='blue')

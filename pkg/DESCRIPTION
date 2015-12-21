@@ -1,10 +1,11 @@
 Package: nnetpredint
 Type: Package
-Title: Prediction intervals of multi-layer neural networks
+Title: Prediction Intervals of Multi-Layer Neural Networks
 Version: 1.2
-Date: 2015-11-22
-Suggests: MASS, nnet, neuralnet, RSNNS
+Date: 2015-12-21
+Suggests: MASS, nnet, neuralnet
+Imports: stats, RSNNS
 Author: Xichen Ding <rockingdingo@gmail.com>
 Maintainer: Xichen Ding <rockingdingo@gmail.com>
-Description: This package provides intervals to the prediction from neural network models (e.g.backpropagation) at certain confidence level.It can take the output from models trained by other packages like nnet, neuralnet, RSNNS, etc.
+Description: Computing prediction intervals of neural network models (e.g.backpropagation) at certain confidence level.It can take the output from models trained by other packages like nnet, neuralnet, RSNNS, etc.
 License: GPL (>= 2)

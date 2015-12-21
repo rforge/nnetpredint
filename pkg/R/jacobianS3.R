@@ -1,15 +1,15 @@
 # S3 Generic methods
 # model object supports: nn, nnet, rsnns, ...
-jacobian<-function(object,...){
+jacobian<-function(object, ...){
 	UseMethod("jacobian", object)
 }
 
-jacobian.default<-function(xTrain,W,B,m,nPara,funName = 'sigmoid'){
-	jacobianMat = getJacobianMatrix(xTrain,W,B,m,nPara,funName)
+jacobian.default<-function(object = NULL, xTrain, W, B, m, nPara, funName = 'sigmoid', ...){
+	jacobianMat = getJacobianMatrix(xTrain, W, B, m, nPara, funName)
 	return (jacobianMat)
 }
 
-jacobian.nn<-function(object, xTrain, funName = 'sigmoid'){
+jacobian.nn<-function(object, xTrain, funName = 'sigmoid', ...){
 	wtsList = object$weights[[1]]
 	m = length(wtsList)
 	nodeNum = c()
@@ -28,7 +28,7 @@ jacobian.nn<-function(object, xTrain, funName = 'sigmoid'){
 }
 # jacobMat = jacobian(nn,x)   # nObs * nPara
 
-jacobian.nnet<-function(object, xTrain, funName = 'sigmoid'){
+jacobian.nnet<-function(object, xTrain, funName = 'sigmoid', ...){
 	wts = object$wts
 	nodeNum = object$n
 	m = length(nodeNum) - 1
@@ -41,7 +41,7 @@ jacobian.nnet<-function(object, xTrain, funName = 'sigmoid'){
 }
 # jacobMat = jacobian(nnet,x)
 
-jacobian.rsnns<-function(object, xTrain, funName = 'sigmoid'){
+jacobian.rsnns<-function(object, xTrain, funName = 'sigmoid', ...){
 	#nodeNum
 	nodeNum = c()
 	nodeNum = c(nodeNum, object$nInputs)

@@ -24,13 +24,13 @@ newData <- test_[,-14]
 yPredInt <- nnetPredInt(nn, x, y, newData)
 print(yPredInt[1:20,])
 
-# S3 default method: xTrain,yTrain,yFit,...
+# S3 default method for user defined weight input
 yFit <- c(nn$net.result[[1]])
 nodeNum <- c(13,5,3,1)
 m <- 3
 wtsList <- nn$weights[[1]]
 wts <- transWeightListToVect(wtsList,m)
-yPredInt2 <- nnetPredInt(x, y, yFit, nodeNum, wts, newData, alpha = 0.05)
+yPredInt2 <- nnetPredInt(object = NULL, x, y, yFit, nodeNum, wts, newData, alpha = 0.05)
 print(yPredInt2[1:20,])
 
 # Compare to the predict values from the neuralnet Compute method

@@ -1,11 +1,17 @@
 # S3 Generic methods
 # model object supports: nn, nnet, rsnns, ...
-nnetPredInt<-function(object,...){
+nnetPredInt<-function(object, ...){
 	UseMethod("nnetPredInt", object)
 }
 
+# S3 method for default
+nnetPredInt.default<-function(object = NULL, xTrain, yTrain, yFit, node, wts, newData, alpha = 0.05 ,lambda = 0.5, funName = 'sigmoid', ...) {
+  yPredInt = getPredInt(xTrain, yTrain, yFit, node, wts, newData, alpha = alpha, lambda = lambda, funName = funName)
+  return(yPredInt)
+}
+
 # S3 method for neuralnet
-nnetPredInt.nn<-function(object, xTrain, yTrain, newData, alpha = 0.05, lambda = 0.5, funName = 'sigmoid') {
+nnetPredInt.nn<-function(object, xTrain, yTrain, newData, alpha = 0.05, lambda = 0.5, funName = 'sigmoid', ...) {
 	# xTrain = object$covariate
 	# yTrain = object$response
 	yFit = object$net.result[[1]]
@@ -18,21 +24,21 @@ nnetPredInt.nn<-function(object, xTrain, yTrain, newData, alpha = 0.05, lambda =
 	}
 	nodeNum = c(nodeNum,1) # output layer
 	wts = transWeightListToVect(wtsList,m)
-	yPredInt = nnetPredInt.default(xTrain, yTrain, yFit, nodeNum, wts, newData, alpha = alpha, lambda = lambda, funName = funName)
+	yPredInt = getPredInt(xTrain, yTrain, yFit, nodeNum, wts, newData, alpha = alpha, lambda = lambda, funName = funName)
 	return(yPredInt)
 }
 
 # S3 method for nnet
-nnetPredInt.nnet<-function(object, xTrain, yTrain, newData, alpha = 0.05, lambda = 0.5, funName = 'sigmoid') {
+nnetPredInt.nnet<-function(object, xTrain, yTrain, newData, alpha = 0.05, lambda = 0.5, funName = 'sigmoid', ...) {
 	wts = object$wts
 	nodeNum = object$n
 	yFit = c(object$fitted.values)
-	yPredInt = nnetPredInt.default(xTrain, yTrain, yFit, nodeNum, wts, newData, alpha = alpha, lambda = lambda, funName = funName)
+	yPredInt = getPredInt(xTrain, yTrain, yFit, nodeNum, wts, newData, alpha = alpha, lambda = lambda, funName = funName)
 	return(yPredInt)
 }
 
 # S3 method for RSNNS
-nnetPredInt.rsnns<-function(object, xTrain, yTrain, newData, alpha = 0.05, lambda = 0.5, funName = 'sigmoid') {
+nnetPredInt.rsnns<-function(object, xTrain, yTrain, newData, alpha = 0.05, lambda = 0.5, funName = 'sigmoid', ...) {
 	# nodeNum
 	nodeNum = c()
 	nodeNum = c(nodeNum, object$nInputs)
@@ -54,6 +60,6 @@ nnetPredInt.rsnns<-function(object, xTrain, yTrain, newData, alpha = 0.05, lambd
 		idx = which(curNodeWts != 0.0)
 		wts = c(wts,curNodeWts[idx])
 	}
-	yPredInt = nnetPredInt.default(xTrain, yTrain, yFit, nodeNum, wts, newData, alpha = alpha, lambda = lambda, funName = funName)
+	yPredInt = getPredInt(xTrain, yTrain, yFit, nodeNum, wts, newData, alpha = alpha, lambda = lambda, funName = funName)
 	return(yPredInt)
 }

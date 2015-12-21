@@ -1,1 +1,19 @@
 exportPattern("^[[:alpha:]]+")
+
+export(activate, jacobian, nnetPredInt, transWeightListToVect)
+export(jacobian.default, jacobian.nn, jacobian.nnet, jacobian.rsnns)
+export(nnetPredInt.default, nnetPredInt.nn, nnetPredInt.nnet, nnetPredInt.rsnns)
+
+importFrom(stats, qt)
+importFrom(RSNNS, extractNetInfo)
+importFrom(RSNNS, weightMatrix)
+
+# S3 Methods Definition
+S3method(jacobian, default)
+S3method(jacobian, nn)
+S3method(jacobian, nnet)
+S3method(jacobian, rsnns)
+S3method(nnetPredInt, default)
+S3method(nnetPredInt, nn)
+S3method(nnetPredInt, nnet)
+S3method(nnetPredInt, rsnns)

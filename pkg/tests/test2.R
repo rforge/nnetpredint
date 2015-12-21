@@ -22,8 +22,8 @@ yTest <- 0.5 + 0.4 * sin(2* pi * newData %*% c(0.4,0.6))+rnorm(dim(newData)[1],m
 yPredInt <- nnetPredInt(net, xTrain, yTrain, newData)
 print(yPredInt[1:20,])
 
-# S3 default method: xTrain,yTrain,yFit,...
-yPredInt2 <- nnetPredInt(xTrain, yTrain, yFit, node = nodeNum, wts = wts, newData, 
+# S3 default method for user defined input
+yPredInt2 <- nnetPredInt(object = NULL, xTrain, yTrain, yFit, node = nodeNum, wts = wts, newData, 
 	alpha = 0.05, funName = 'sigmoid')
 
 plot(newData %*% c(0.4,0.6),yTest,type = 'b')
