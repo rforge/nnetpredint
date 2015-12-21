@@ -7,5 +7,5 @@ Suggests: MASS, nnet, neuralnet
 Imports: stats, RSNNS
 Author: Xichen Ding <rockingdingo@gmail.com>
 Maintainer: Xichen Ding <rockingdingo@gmail.com>
-Description: Computing prediction intervals of neural network models (e.g.backpropagation) at certain confidence level.It can take the output from models trained by other packages like nnet, neuralnet, RSNNS, etc.
+Description: Computing prediction intervals of neural network models (e.g.backpropagation) at certain confidence level. It can take the output from models trained by other packages like 'nnet', 'neuralnet', 'RSNNS', etc.
 License: GPL (>= 2)

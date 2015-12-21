@@ -28,7 +28,7 @@ nnetPredInt(object, ...)
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{object}{
-  object of class: nnet as returned by nnet package, nn as returned by neuralnet package, rsnns as returned by RSNNS package. Object set as NULL will use the default method which takes the weight parameters as the input from user.
+  object of class: nnet as returned by 'nnet' package, nn as returned by 'neuralnet' package, rsnns as returned by 'RSNNS' package. Object set as NULL will use the default method which takes the weight parameters as the input from user.
   }
   \item{xTrain}{
   matrix or data frame of input values for the training dataset.
@@ -40,7 +40,7 @@ nnetPredInt(object, ...)
   matrix or data frame of the prediction dataset.
   }
   \item{yFit}{
-  vector of the fitted values, as the output produced by the training model, e.g. nnet$fitted.values (nnet) , nn$net.result[[1]] (neuralnet) and rsnns$fitted.values (RSNNS)
+  vector of the fitted values, as the output produced by the training model, e.g. nnet$fitted.values ('nnet') , nn$net.result[[1]] ('neuralnet') and rsnns$fitted.values ('RSNNS')
 }
   \item{node}{
 a vector of integers specifying the number of hidden nodes in each layer. Multi-layer network has the structure (s0, s1, ..., sm), in which s0 denotes the dimension for input layer and sm denotes the dimension of the output layer. sm is usually set as 1.
@@ -49,13 +49,13 @@ a vector of integers specifying the number of hidden nodes in each layer. Multi-
   a numeric vector of optimal weight parameters as the output of the neural network training model. The order of wts parameter is as follows: For any node i in layer k: c(bias ik, wi1k,wi2k,...wijk).
   }
   \item{}{
-  nnet object, returned by nnet package. We can directly set the wts as: wts = nnet$wts
+  nnet object, returned by 'nnet' package. We can directly set the wts as: wts = nnet$wts
   }
   \item{}{
-  nn object, returned by neuralnet package. We need to use \link{transWeightListToVect} function to transform the list of weights to a single vector first: wts = transWeightListToVect(wtsList, m).
+  nn object, returned by 'neuralnet' package. We need to use \link{transWeightListToVect} function to transform the list of weights to a single vector first: wts = transWeightListToVect(wtsList, m).
   }
   \item{}{
-  rsnns object, returned by RSNNS package. We need to transform and combine the weight and bias parameters to a single vector: weightMatrix(object) and extractNetInfo(object)$unitDefinitions$unitBias.
+  rsnns object, returned by 'RSNNS' package. We need to transform and combine the weight and bias parameters to a single vector: weightMatrix(object) and extractNetInfo(object)$unitDefinitions$unitBias.
   }
   \item{alpha}{
   confidence level. The confidence level is set to (1-alpha). In default, alpha = 0.05.
@@ -91,11 +91,11 @@ De Veaux R. D., Schumi J., Schweinsberg J., Ungar L. H., 1998, "Prediction inter
 
 Chryssolouris G., Lee M., Ramsey A., "Confidence interval prediction for neural networks models", IEEE Trans. Neural Networks, 7 (1), 1996, pp. 229-232.
 
-neuralnet package by Stefan Fritsch, Frauke Guenther.
+'neuralnet' package by Stefan Fritsch, Frauke Guenther.
 
-nnet package by Brian Ripley, William Venables.
+'nnet' package by Brian Ripley, William Venables.
 
-RSNNS package by Christoph Bergmeir, Jose M. Benitez.
+'RSNNS' package by Christoph Bergmeir, Jose M. Benitez.
 }
 \author{
 %%  ~~who you are~~

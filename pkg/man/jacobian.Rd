@@ -23,7 +23,7 @@ jacobian(object, ...)
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{object}{
-  object of class: nnet as returned by nnet package, nn as returned by neuralnet package, rsnns as returned by RSNNS package.
+  object of class: nnet as returned by 'nnet' package, nn as returned by 'neuralnet' package, rsnns as returned by 'RSNNS' package.
   }
   \item{xTrain}{
   matrix or data frame of input values for the training dataset.
